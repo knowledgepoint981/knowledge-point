@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Knowledge Point</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d6efd">
+
+<style>
+
+    /* =========================
+       HERO SECTION
+    ========================= */
+
+    .hero {
+        max-width: 1100px;
+        margin: 25px auto;
+        padding: 55px 25px;
+        text-align: center;
+
+        border-radius: 25px;
+
+        background: linear-gradient(
+            135deg,
+            #0f766e,
+            #2563eb
+        );
+
+        color: white;
+
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero h2 {
+        font-size: 42px;
+        margin-bottom: 15px;
+    }
+
+    .hero p {
+        max-width: 750px;
+        margin: auto;
+
+        font-size: 18px;
+        line-height: 1.7;
+    }
+
+    .hero-button {
+        display: inline-block;
+
+        margin-top: 25px;
+        padding: 13px 30px;
+
+        background: white;
+        color: #0f766e;
+
+        text-decoration: none;
+
+        border-radius: 30px;
+
+        font-weight: bold;
+
+        transition: 0.3s;
+    }
+
+    .hero-button:hover {
+        transform: translateY(-4px);
+
+        box-shadow:
+            0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+
+
+    /* =========================
+       LANDSCAPE IMAGE SECTION
+    ========================= */
+
+    .gallery-section {
+        max-width: 1050px;
+        margin: 55px auto;
+        padding: 20px;
+
+        text-align: center;
+    }
+
+    .gallery-section h2 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .gallery-description {
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+
+    /* ONE COLUMN */
+
+    .home-gallery {
+        display: flex;
+        flex-direction: column;
+
+        gap: 28px;
+
+        width: 100%;
+    }
+
+
+    /* LANDSCAPE CARD */
+
+    .gallery-card {
+        position: relative;
+
+        width: 100%;
+        height: 300px;
+
+        overflow: hidden;
+
+        padding: 7px;
+
+        background: white;
+
+        border: 3px solid #0f766e;
+
+        border-radius: 22px;
+
+        box-shadow:
+            0 8px 22px rgba(0, 0, 0, 0.14),
+            0 0 0 3px rgba(15, 118, 110, 0.06);
+
+        transition:
+            transform 0.35s ease,
+            box-shadow 0.35s ease,
+            border-color 0.35s ease;
+    }
+
+
+    /* IMAGE */
+
+    .gallery-card img {
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        object-fit: cover;
+
+        border-radius: 14px;
+
+        transition:
+            transform 0.5s ease;
+    }
+
+
+    /* HOVER */
+
+    .gallery-card:hover {
+        transform: translateY(-7px);
+
+        border-color: #2563eb;
+
+        box-shadow:
+            0 18px 35px rgba(0, 0, 0, 0.20),
+            0 0 20px rgba(37, 99, 235, 0.18);
+    }
+
+    .gallery-card:hover img {
+        transform: scale(1.04);
+    }
+
+
+    /* IMAGE TITLE */
+
+    .gallery-overlay {
+        position: absolute;
+
+        left: 7px;
+        right: 7px;
+        bottom: 7px;
+
+        padding: 60px 25px 20px;
+
+        border-radius:
+            0 0 14px 14px;
+
+        background:
+            linear-gradient(
+                transparent,
+                rgba(0, 0, 0, 0.82)
+            );
+
+        color: white;
+
+        text-align: left;
+    }
+
+    .gallery-overlay h3 {
+        margin: 0;
+
+        font-size: 25px;
+
+        letter-spacing: 0.5px;
+    }
+
+
+
+    /* =========================
+       TABLET
+    ========================= */
+
+    @media (max-width: 768px) {
+
+        .hero {
+            margin: 15px;
+            padding: 40px 18px;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+        }
+
+        .gallery-section {
+            margin: 35px 15px;
+            padding: 10px;
+        }
+
+        .gallery-card {
+            height: 240px;
+        }
+
+    }
+
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 480px) {
+
+        .hero h2 {
+            font-size: 27px;
+        }
+
+        .hero p {
+            font-size: 16px;
+        }
+
+        .gallery-section h2 {
+            font-size: 27px;
+        }
+
+        .gallery-card {
+            height: 200px;
+
+            border-width: 3px;
+            border-radius: 18px;
+        }
+
+        .gallery-overlay {
+            padding:
+                45px 17px 15px;
+        }
+
+        .gallery-overlay h3 {
+            font-size: 21px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <span class="logo-icon">
+            🎓
+        </span>
+
+        <h1>
+            Knowledge Point
+        </h1>
+
+    </div>
+
+    <p>
+        Learn • Practice • Succeed
+    </p>
+
+</header>
+
+
+
+<!-- NAVIGATION -->
+
+<nav class="navbar">
+
+    <a href="index.html" class="active">
+        Home
+    </a>
+
+    <a href="class9.html">
+        9th Class
+    </a>
+
+    <a href="class10.html">
+        10th Class
+    </a>
+
+    <a href="class11.html">
+        11th Class
+    </a>
+
+    <a href="class12.html">
+        12th Class
+    </a>
+
+</nav>
+
+
+
+<!-- MAIN -->
+
+<main>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h2>
+            Welcome to Knowledge Point 🎓
+        </h2>
+
+        <p>
+            Your complete educational platform for
+            Notes, MCQs, Quizzes and Guess Papers.
+            Learn smarter, practice better and prepare
+            with confidence.
+        </p>
+
+        <a
+            href="#classes"
+            class="hero-button">
+
+            Start Learning
+
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================
+         FIVE LANDSCAPE IMAGES
+    ========================= -->
+
+    <section class="gallery-section">
+
+        <h2>
+            Explore Knowledge Point
+        </h2>
+
+        <p class="gallery-description">
+            Discover learning resources designed to help
+            you learn, practice and succeed.
+        </p>
+
+
+        <div class="home-gallery">
+
+
+            <!-- IMAGE 1 -->
+
+            <div class="gallery-card">
+
+                <img
+                    src="images/home1.jpg"
+                    alt="Students learning">
+
+                <div class="gallery-overlay">
+
+                    <h3>
+                        Learn
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- IMAGE 2 -->
+
+            <div class="gallery-card">
+
+                <img
+                    src="images/home2.jpg"
+                    alt="Study materials">
+
+                <div class="gallery-overlay">
+
+                    <h3>
+                        Study
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- IMAGE 3 -->
+
+            <div class="gallery-card">
+
+                <img
+                    src="images/home3.jpg"
+                    alt="Science education">
+
+                <div class="gallery-overlay">
+
+                    <h3>
+                        Explore
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- IMAGE 4 -->
+
+            <div class="gallery-card">
+
+                <img
+                    src="images/home4.jpg"
+                    alt="Exam preparation">
+
+                <div class="gallery-overlay">
+
+                    <h3>
+                        Practice
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- IMAGE 5 -->
+
+            <div class="gallery-card">
+
+                <img
+                    src="images/home5.jpg"
+                    alt="Educational success">
+
+                <div class="gallery-overlay">
+
+                    <h3>
+                        Succeed
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CLASSES
+    ========================= -->
+
+    <section
+        class="classes-section"
+        id="classes">
+
+        <h2>
+            Select Your Class
+        </h2>
+
+        <p class="section-description">
+            Choose your class to access educational material.
+        </p>
+
+
+        <div class="class-cards">
+
+
+            <!-- 9TH -->
+
+            <div class="class-card">
+
+                <div class="class-icon">
+                    📘
+                </div>
+
+                <h3>
+                    9th Class
+                </h3>
+
+                <p>
+                    Notes, MCQs, Quizzes and Guess Papers
+                </p>
+
+                <a
+                    href="class9.html"
+                    class="open-button">
+
+                    Open Class
+
+                </a>
+
+            </div>
+
+
+
+            <!-- 10TH -->
+
+            <div class="class-card">
+
+                <div class="class-icon">
+                    📗
+                </div>
+
+                <h3>
+                    10th Class
+                </h3>
+
+                <p>
+                    Notes, MCQs, Quizzes and Guess Papers
+                </p>
+
+                <a
+                    href="class10.html"
+                    class="open-button">
+
+                    Open Class
+
+                </a>
+
+            </div>
+
+
+
+            <!-- 11TH -->
+
+            <div class="class-card">
+
+                <div class="class-icon">
+                    📕
+                </div>
+
+                <h3>
+                    11th Class
+                </h3>
+
+                <p>
+                    Notes, MCQs, Quizzes and Guess Papers
+                </p>
+
+                <a
+                    href="class11.html"
+                    class="open-button">
+
+                    Open Class
+
+                </a>
+
+            </div>
+
+
+
+            <!-- 12TH -->
+
+            <div class="class-card">
+
+                <div class="class-icon">
+                    📙
+                </div>
+
+                <h3>
+                    12th Class
+                </h3>
+
+                <p>
+                    Notes, MCQs, Quizzes and Guess Papers
+                </p>
+
+                <a
+                    href="class12.html"
+                    class="open-button">
+
+                    Open Class
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FEATURES
+    ========================= -->
+
+    <section class="features">
+
+        <h2>
+            What You Can Find
+        </h2>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📝
+                </div>
+
+                <h3>
+                    Notes
+                </h3>
+
+                <p>
+                    Organized study notes for your subjects.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ❓
+                </div>
+
+                <h3>
+                    MCQs
+                </h3>
+
+                <p>
+                    Practice important multiple-choice questions.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Quizzes
+                </h3>
+
+                <p>
+                    Test your knowledge and improve your preparation.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+                <h3>
+                    Guess Papers
+                </h3>
+
+                <p>
+                    Prepare with important expected questions.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <h3>
+        Knowledge Point
+    </h3>
+
+    <p>
+        Learn • Practice • Succeed
+    </p>
+
+    <p class="copyright">
+        © 2026 Knowledge Point. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script src="script.js"></script>
+```
+    <!-- Your existing footer -->
+
+    <script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("service-worker.js")
+                .then(() => console.log("Service Worker registered successfully"))
+                .catch(error => console.log("Service Worker registration failed:", error));
+        });
+    }
+    </script>
+
+</body>
+
+</html>

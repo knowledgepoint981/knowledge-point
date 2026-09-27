@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biology Chapter 1 Quiz - Knowledge Point</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.quiz-top {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+}
+.timer {
+    background:#173b8f;
+    color:white;
+    padding:10px 18px;
+    border-radius:25px;
+    font-weight:bold;
+    font-size:18px;
+    min-width:115px;
+    text-align:center;
+}
+.quiz-info {
+    color:#666;
+    font-weight:bold;
+}
+.question-card {
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+.question-number {
+    color:#2563eb;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+.question-text {
+    font-size:17px;
+    font-weight:bold;
+    color:#222;
+    margin-bottom:15px;
+}
+.options {
+    display:grid;
+    gap:10px;
+}
+.option-label {
+    display:block;
+    padding:12px 14px;
+    border:1px solid #d8deea;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+.option-label:hover {
+    background:#f1f5ff;
+    border-color:#2563eb;
+}
+.option-label input {
+    margin-right:10px;
+}
+.submit-wrap {
+    text-align:center;
+    margin:25px 0 35px;
+}
+.submit-btn, .retry-btn {
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:13px 28px;
+    border-radius:25px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.submit-btn:hover, .retry-btn:hover {
+    background:#173b8f;
+}
+.result {
+    display:none;
+    background:white;
+    padding:30px 22px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+    margin-bottom:35px;
+    text-align:center;
+}
+.result h2 {
+    color:#173b8f;
+    margin-bottom:10px;
+}
+.score {
+    font-size:30px;
+    font-weight:bold;
+    color:#2563eb;
+    margin:10px 0;
+}
+.result-message {
+    color:#555;
+    margin-bottom:18px;
+}
+.review {
+    margin-top:25px;
+    text-align:left;
+}
+.review-item {
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+    border-left:5px solid;
+}
+.review-item.correct {
+    border-left-color:#16a34a;
+    background:#f0fdf4;
+}
+.review-item.wrong {
+    border-left-color:#dc2626;
+    background:#fef2f2;
+}
+.review-item.unanswered {
+    border-left-color:#d97706;
+    background:#fffbeb;
+}
+.review-item p {
+    margin:5px 0;
+}
+.hidden { display:none; }
+
+.name-box {
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom:22px;
+    text-align:center;
+}
+.name-box h3 { color:#173b8f; margin-bottom:8px; font-size:22px; }
+.name-box p { color:#666; margin-bottom:15px; }
+.name-input {
+    width:100%; max-width:500px; padding:13px 15px;
+    border:2px solid #d8deea; border-radius:10px; font-size:16px; outline:none;
+}
+.name-input:focus { border-color:#2563eb; }
+.start-btn {
+    margin-top:15px; border:none; background:#2563eb; color:white;
+    padding:12px 28px; border-radius:25px; font-size:16px; font-weight:bold; cursor:pointer;
+}
+.start-btn:hover { background:#173b8f; }
+.certificate { display:none; background:white; padding:12px; margin-top:30px; }
+.certificate-inner {
+    border:8px double #173b8f; padding:45px 30px; text-align:center;
+    position:relative; background:#fff;
+}
+.certificate-inner::before {
+    content:""; position:absolute; inset:10px; border:1px solid #2563eb; pointer-events:none;
+}
+.certificate-label { color:#2563eb; font-weight:bold; letter-spacing:3px; font-size:14px; }
+.certificate h2 { color:#173b8f; font-size:38px; margin:10px 0; }
+.certificate h3 { color:#222; font-size:30px; margin:15px 0; }
+.certificate p { color:#555; font-size:16px; margin:8px 0; }
+.certificate-score { font-size:20px; font-weight:bold; color:#2563eb; margin:15px 0; }
+.certificate-meta {
+    display:flex; justify-content:space-between; gap:15px; margin-top:35px;
+    font-size:13px; color:#666;
+}
+.print-btn {
+    margin-top:20px; border:none; background:#173b8f; color:white;
+    padding:12px 25px; border-radius:25px; font-size:15px; font-weight:bold; cursor:pointer;
+}
+@media print {
+    body * { visibility:hidden; }
+    #certificate, #certificate * { visibility:visible; }
+    #certificate {
+        display:block !important; position:absolute; left:0; top:0; width:100%; margin:0; padding:0;
+    }
+    .certificate-inner {
+        min-height:650px; display:flex; flex-direction:column; justify-content:center;
+    }
+    .print-btn { display:none; }
+}
+
+@media(max-width:600px) {
+    .question-card {padding:18px;}
+    .question-text {font-size:16px;}
+    .timer {font-size:16px;}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">
+        <span class="logo-icon">🧬</span>
+        <h1>Knowledge Point</h1>
+    </div>
+    <p>11th Class Biology • Chapter 1 Quiz</p>
+</header>
+
+<nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="class9.html">9th Class</a>
+    <a href="class10.html">10th Class</a>
+    <a href="class11.html" class="active">11th Class</a>
+    <a href="class12.html">12th Class</a>
+</nav>
+
+<main>
+    <section class="welcome">
+        <h2>Biology — Chapter 1 Quiz</h2>
+        <p>15 random MCQs from the 150-question Chapter 1 question bank. You have 8 minutes.</p>
+    </section>
+
+    <div id="nameArea" class="name-box">
+        <h3>Enter Your Name</h3>
+        <p>Your name will appear on your award certificate after you complete the quiz.</p>
+        <input type="text" id="studentName" class="name-input" placeholder="Enter your full name" maxlength="60" autocomplete="name">
+        <br>
+        <button type="button" class="start-btn" id="startQuizBtn">Start Quiz</button>
+    </div>
+
+    <div id="quizArea" style="display:none;">
+        <div class="quiz-top">
+            <div class="quiz-info">15 Questions • 8 Minutes</div>
+            <div id="timer" class="timer">08:00</div>
+        </div>
+
+        <form id="quizForm"></form>
+
+        <div class="submit-wrap">
+            <button type="button" class="submit-btn" id="submitBtn">Submit Quiz</button>
+        </div>
+    </div>
+
+    <section id="result" class="result">
+        <h2>Quiz Result</h2>
+        <div id="score" class="score"></div>
+        <p id="resultMessage" class="result-message"></p>
+        <button type="button" class="retry-btn" id="retryBtn">Try Again</button>
+        <div id="review" class="review"></div>
+    </section>
+
+    <section id="certificate" class="certificate">
+        <div class="certificate-inner">
+            <div class="certificate-label">KNOWLEDGE POINT</div>
+            <h2>AWARD CERTIFICATE</h2>
+            <p>This certificate is proudly presented to</p>
+            <h3 id="certificateName"></h3>
+            <p>for successfully completing the</p>
+            <p><strong>11th Class Biology — Chapter 1 Quiz</strong></p>
+            <div id="certificateScore" class="certificate-score"></div>
+            <p>Keep learning, practicing, and succeeding!</p>
+            <div class="certificate-meta">
+                <span>Date: <strong id="certificateDate"></strong></span>
+                <span>Certificate ID: <strong id="certificateId"></strong></span>
+            </div>
+            <button type="button" class="print-btn" id="printCertificateBtn">Print / Save Certificate</button>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <h3>Knowledge Point</h3>
+    <p>Learn • Practice • Succeed</p>
+    <p class="copyright">© 2026 Knowledge Point. All Rights Reserved.</p>
+</footer>
+
+<script>
+const questionBank = [{"id": 1, "question": "Which feature most directly distinguishes a eukaryotic cell from a prokaryotic cell?", "options": ["Presence of ribosomes", "Presence of cytoplasm", "Membrane-bound nucleus", "Presence of plasma membrane"], "answer": 2}, {"id": 2, "question": "If the plasma membrane loses its selective permeability, which cellular property would be affected first?", "options": ["Regulation of intracellular composition", "DNA replication", "Ribosomal assembly", "Chromosome condensation"], "answer": 0}, {"id": 3, "question": "The fluid mosaic model describes the plasma membrane primarily as a structure containing", "options": ["A rigid lipid layer with fixed proteins", "A phospholipid bilayer with mobile proteins", "A carbohydrate bilayer surrounding proteins", "A protein bilayer containing immobile lipids"], "answer": 1}, {"id": 4, "question": "Which membrane component contributes most directly to recognition between neighboring cells?", "options": ["Cholesterol", "Glycoproteins", "Phospholipid tails", "Cytosolic enzymes"], "answer": 1}, {"id": 5, "question": "A cell placed in a hypotonic solution will tend to gain water because", "options": ["Solute concentration is higher outside", "Water potential favors inward movement of water", "ATP drives water into the cell", "Proteins actively pump water inward"], "answer": 1}, {"id": 6, "question": "Which organelle is directly associated with synthesis of proteins destined for secretion?", "options": ["Smooth ER", "Rough ER", "Lysosome", "Peroxisome"], "answer": 1}, {"id": 7, "question": "Ribosomes attached to rough ER differ functionally from free ribosomes mainly in the", "options": ["Type of ribosomal RNA", "Location of protein synthesis products", "Mechanism of peptide bond formation", "Genetic information they contain"], "answer": 1}, {"id": 8, "question": "The Golgi complex is particularly important for", "options": ["DNA replication", "Modification and sorting of proteins", "ATP synthesis", "Fatty-acid oxidation only"], "answer": 1}, {"id": 9, "question": "A vesicle carrying a newly synthesized secretory protein normally buds from the", "options": ["Lysosome", "Golgi apparatus", "Nucleus", "Mitochondrial matrix"], "answer": 1}, {"id": 10, "question": "Which organelle contains hydrolytic enzymes capable of digesting cellular material?", "options": ["Peroxisome", "Lysosome", "Ribosome", "Centriole"], "answer": 1}, {"id": 11, "question": "The acidic interior of a lysosome is important because it", "options": ["Prevents enzyme activity", "Provides optimum conditions for many hydrolases", "Produces ATP", "Synthesizes membrane proteins"], "answer": 1}, {"id": 12, "question": "Peroxisomes are especially associated with reactions involving", "options": ["DNA transcription", "Hydrogen peroxide metabolism", "Ribosomal synthesis", "Protein translation"], "answer": 1}, {"id": 13, "question": "Catalase in peroxisomes protects cells primarily by converting", "options": ["Oxygen into glucose", "Hydrogen peroxide into less harmful products", "Glucose into glycogen", "ATP into ADP"], "answer": 1}, {"id": 14, "question": "Glyoxisomes are especially important in germinating oil-rich seeds because they facilitate conversion of", "options": ["Proteins into nucleic acids", "Stored lipids toward carbohydrates", "Cellulose into proteins", "DNA into RNA"], "answer": 1}, {"id": 15, "question": "The major function of the mitochondrial inner membrane is associated with", "options": ["DNA transcription only", "Electron transport and ATP production", "Ribosome destruction", "Lysosomal digestion"], "answer": 1}, {"id": 16, "question": "Cristae increase mitochondrial efficiency primarily by", "options": ["Increasing matrix volume", "Increasing inner membrane surface area", "Increasing DNA quantity", "Decreasing enzyme concentration"], "answer": 1}, {"id": 17, "question": "The mitochondrial matrix contains enzymes primarily involved in", "options": ["Glycolysis", "Krebs cycle reactions", "DNA translation in nucleus", "Golgi modification"], "answer": 1}, {"id": 18, "question": "Which evidence supports the endosymbiotic origin of mitochondria?", "options": ["They contain cellulose", "They contain their own DNA and ribosomes", "They lack membranes", "They occur only in prokaryotes"], "answer": 1}, {"id": 19, "question": "Chlorophyll molecules responsible for capturing light energy are located mainly in the", "options": ["Chloroplast envelope", "Thylakoid membranes", "Stroma only", "Outer nuclear membrane"], "answer": 1}, {"id": 20, "question": "Stacks of thylakoids within chloroplasts are called", "options": ["Cristae", "Grana", "Cisternae", "Matrix"], "answer": 1}, {"id": 21, "question": "The Calvin cycle occurs primarily in the", "options": ["Thylakoid lumen", "Stroma", "Outer membrane", "Intermembrane space"], "answer": 1}, {"id": 22, "question": "The immediate role of chloroplast electron transport is to help establish", "options": ["A DNA gradient", "A proton gradient", "A glucose gradient", "A calcium gradient only"], "answer": 1}, {"id": 23, "question": "Which plastid is specialized primarily for storage of starch?", "options": ["Amyloplast", "Chromoplast", "Chloroplast", "Elaioplast"], "answer": 0}, {"id": 24, "question": "Chromoplasts are primarily associated with", "options": ["Protein synthesis", "Pigment accumulation other than chlorophyll", "ATP synthesis", "DNA replication"], "answer": 1}, {"id": 25, "question": "The plant cell wall provides structural support mainly through a matrix containing", "options": ["Cellulose and other polysaccharides", "Phospholipids only", "DNA and RNA", "Cholesterol only"], "answer": 0}, {"id": 26, "question": "Plasmodesmata are important because they", "options": ["Produce ATP", "Connect the cytoplasm of adjacent plant cells", "Digest proteins", "Replicate DNA"], "answer": 1}, {"id": 27, "question": "Which structure is absent from a typical prokaryotic cell?", "options": ["Plasma membrane", "Ribosomes", "Membrane-bound nucleus", "Cytoplasm"], "answer": 2}, {"id": 28, "question": "Prokaryotic DNA is generally located in the", "options": ["Nucleolus", "Nucleoid region", "Golgi complex", "Lysosome"], "answer": 1}, {"id": 29, "question": "Which statement about prokaryotic ribosomes is correct?", "options": ["They are absent", "They are smaller than typical eukaryotic cytoplasmic ribosomes", "They occur only inside nuclei", "They contain membrane-bound compartments"], "answer": 1}, {"id": 30, "question": "The nucleolus is primarily involved in", "options": ["Lipid digestion", "Ribosomal subunit production", "ATP synthesis", "Endocytosis"], "answer": 1}, {"id": 31, "question": "Nuclear pores regulate", "options": ["Movement between nucleus and cytoplasm", "Movement through lysosomes", "Protein folding in mitochondria", "Cell-wall synthesis"], "answer": 0}, {"id": 32, "question": "Chromatin consists mainly of", "options": ["DNA associated with proteins", "RNA associated with lipids", "Lipids associated with cellulose", "Proteins associated with ATP"], "answer": 0}, {"id": 33, "question": "Which organelle is directly continuous with the outer nuclear membrane?", "options": ["Rough ER", "Lysosome", "Golgi complex", "Peroxisome"], "answer": 0}, {"id": 34, "question": "Smooth ER is particularly important in cells specialized for", "options": ["Lipid synthesis and detoxification", "Ribosomal RNA production", "DNA packaging", "Cell division only"], "answer": 0}, {"id": 35, "question": "The Golgi apparatus can be considered a cellular processing center because it", "options": ["Replicates chromosomes", "Modifies, sorts, and packages molecules", "Produces all ATP", "Performs photosynthesis"], "answer": 1}, {"id": 36, "question": "Secretory vesicles release their contents outside a cell through", "options": ["Endocytosis", "Exocytosis", "Phagocytosis", "Osmosis"], "answer": 1}, {"id": 37, "question": "Endocytosis requires the plasma membrane to", "options": ["Become permanently rigid", "Invaginate and form vesicles", "Dissolve completely", "Lose all proteins"], "answer": 1}, {"id": 38, "question": "Phagocytosis is best described as uptake of", "options": ["Large particles or cells", "Water molecules only", "Dissolved gases", "Small ions through channels"], "answer": 0}, {"id": 39, "question": "Pinocytosis primarily involves uptake of", "options": ["Extracellular fluid and dissolved substances", "Whole cells only", "Chromosomes", "Mitochondria"], "answer": 0}, {"id": 40, "question": "Receptor-mediated endocytosis is more selective than ordinary pinocytosis because it", "options": ["Requires no membrane", "Depends on specific receptor-ligand interactions", "Occurs only in plants", "Does not form vesicles"], "answer": 1}, {"id": 41, "question": "Cell signalling allows a cell to", "options": ["Ignore extracellular information", "Detect and respond to environmental or cellular signals", "Eliminate its nucleus", "Stop all metabolism"], "answer": 1}, {"id": 42, "question": "A signalling molecule that binds to a receptor on the plasma membrane is most likely", "options": ["Unable to enter the cell directly", "Always a steroid", "Always an ion", "Always a carbohydrate"], "answer": 0}, {"id": 43, "question": "Steroid hormones commonly act through intracellular receptors because they", "options": ["Are lipid-soluble", "Are large proteins", "Cannot cross membranes", "Are permanently charged"], "answer": 0}, {"id": 44, "question": "A membrane receptor is most directly involved in converting an extracellular signal into", "options": ["A change in intracellular activity", "A chromosome", "A cell wall", "A ribosome"], "answer": 0}, {"id": 45, "question": "Signal transduction commonly involves", "options": ["Receptors, relay molecules, and intracellular effectors", "Only DNA molecules", "Only lysosomal enzymes", "Only membrane lipids"], "answer": 0}, {"id": 46, "question": "Which is an example of a second messenger?", "options": ["cAMP", "DNA", "Cellulose", "Hemoglobin"], "answer": 0}, {"id": 47, "question": "Protein kinases regulate cellular processes primarily by", "options": ["Adding phosphate groups to target proteins", "Removing DNA bases", "Destroying ribosomes", "Synthesizing cellulose"], "answer": 0}, {"id": 48, "question": "Phosphatases generally oppose kinase activity by", "options": ["Adding phosphate groups", "Removing phosphate groups", "Producing ATP from glucose", "Producing DNA"], "answer": 1}, {"id": 49, "question": "Signal amplification means that", "options": ["One signal can produce many downstream activated molecules", "Signals become physically larger", "Receptors become DNA", "The cell stops responding"], "answer": 0}, {"id": 50, "question": "Which sequence best represents a generalized cell-signalling pathway?", "options": ["Response → receptor → signal → relay", "Signal → receptor → transduction → response", "DNA → lysosome → signal → receptor", "Ribosome → signal → nucleus → membrane"], "answer": 1}, {"id": 51, "question": "A receptor's specificity depends primarily on", "options": ["Complementarity between receptor and signalling molecule", "Cell size", "Number of mitochondria", "Amount of cytoplasm"], "answer": 0}, {"id": 52, "question": "Why can the same extracellular signal produce different responses in different cells?", "options": ["Cells may possess different receptors or intracellular signalling machinery", "All cells contain identical proteins", "Signals change their chemical identity randomly", "DNA is absent in some cells"], "answer": 0}, {"id": 53, "question": "The cytoplasm of a eukaryotic cell includes", "options": ["Cytosol and suspended organelles outside the nucleus", "Only the nucleus", "Only the plasma membrane", "Only extracellular fluid"], "answer": 0}, {"id": 54, "question": "Cytosol is best described as", "options": ["The aqueous component of the cytoplasm", "The entire cell wall", "The nuclear membrane", "The mitochondrial DNA"], "answer": 0}, {"id": 55, "question": "Which organelle is not surrounded by a membrane?", "options": ["Lysosome", "Ribosome", "Peroxisome", "Golgi complex"], "answer": 1}, {"id": 56, "question": "Centrioles are most directly associated with", "options": ["Organization of microtubules during cell division", "Protein digestion", "Photosynthesis", "Lipid storage"], "answer": 0}, {"id": 57, "question": "A typical centrosome contains", "options": ["A pair of centrioles and associated material", "A pair of lysosomes", "Chloroplasts", "Golgi cisternae"], "answer": 0}, {"id": 58, "question": "Which structure is most directly responsible for maintaining chromosome separation during mitosis?", "options": ["Spindle microtubules", "Lysosomal membrane", "Cell wall", "Golgi vesicles"], "answer": 0}, {"id": 59, "question": "Vacuoles in plant cells contribute significantly to", "options": ["Storage and maintenance of cell turgor", "Ribosome production", "DNA replication", "Oxidative phosphorylation"], "answer": 0}, {"id": 60, "question": "The large central vacuole of a plant cell is bounded by the", "options": ["Tonoplast", "Nuclear envelope", "Cell wall", "Plasmalemma only"], "answer": 0}, {"id": 61, "question": "Which organelle is especially prominent in cells specialized for secretion?", "options": ["Rough ER and Golgi complex", "Centrioles only", "Chloroplasts only", "Lysosomes only"], "answer": 0}, {"id": 62, "question": "A protein synthesized on rough ER typically reaches the Golgi apparatus through", "options": ["Transport vesicles", "Nuclear pores", "Cristae", "Plasmodesmata"], "answer": 0}, {"id": 63, "question": "The cis face of the Golgi apparatus generally", "options": ["Receives transport vesicles", "Releases chromosomes", "Produces ATP", "Performs glycolysis"], "answer": 0}, {"id": 64, "question": "The trans face of the Golgi apparatus is particularly associated with", "options": ["Sorting and dispatching processed products", "DNA replication", "Photosynthesis", "Ribosome synthesis"], "answer": 0}, {"id": 65, "question": "Lysosomes can originate functionally from the", "options": ["Golgi apparatus", "Mitochondrial matrix", "Nucleolus", "Chloroplast stroma"], "answer": 0}, {"id": 66, "question": "Autophagy involves", "options": ["Lysosomal degradation of cellular components", "DNA replication", "Cell-wall formation", "Photosynthetic carbon fixation"], "answer": 0}, {"id": 67, "question": "Which organelle is particularly involved in detoxifying certain harmful substances?", "options": ["Smooth ER and peroxisomes", "Ribosomes only", "Nucleolus", "Centrioles"], "answer": 0}, {"id": 68, "question": "Peroxisomes differ from lysosomes because peroxisomes primarily contain enzymes involved in", "options": ["Oxidative reactions", "Hydrolytic digestion only", "Ribosome assembly", "Protein translation"], "answer": 0}, {"id": 69, "question": "A major advantage of compartmentalization in eukaryotic cells is that it", "options": ["Allows incompatible reactions to occur in specialized environments", "Eliminates the need for enzymes", "Prevents all molecular movement", "Removes the need for ATP"], "answer": 0}, {"id": 70, "question": "The double membrane surrounding mitochondria is consistent with", "options": ["Their endosymbiotic evolutionary history", "Their role in cell-wall formation", "Their origin from lysosomes", "Their lack of DNA"], "answer": 0}, {"id": 71, "question": "Mitochondrial DNA is generally", "options": ["Circular and located within mitochondria", "Linear and enclosed in the nucleolus", "Absent from mitochondria", "Identical to nuclear DNA in organization"], "answer": 0}, {"id": 72, "question": "Which structure contains enzymes responsible for ATP synthesis using the proton gradient?", "options": ["Inner mitochondrial membrane", "Outer mitochondrial membrane", "Golgi membrane", "Nuclear pore"], "answer": 0}, {"id": 73, "question": "The mitochondrial intermembrane space becomes enriched in protons during", "options": ["Electron transport", "Glycolysis", "Translation", "DNA replication"], "answer": 0}, {"id": 74, "question": "Chloroplasts and mitochondria are similar because both", "options": ["Have double membranes and their own genetic material", "Perform identical metabolic pathways", "Lack ribosomes", "Are found in all cells"], "answer": 0}, {"id": 75, "question": "Which chloroplast structure directly contains photosystems?", "options": ["Thylakoid membrane", "Stroma", "Outer envelope", "Intermembrane space"], "answer": 0}, {"id": 76, "question": "The oxygen released during photosynthesis originates primarily from", "options": ["Water", "Carbon dioxide", "Glucose", "Chlorophyll"], "answer": 0}, {"id": 77, "question": "ATP and NADPH generated by light-dependent reactions are subsequently used mainly in", "options": ["Carbon fixation reactions", "DNA replication", "Lysosomal digestion", "Ribosome assembly"], "answer": 0}, {"id": 78, "question": "The cell wall differs from the plasma membrane because the cell wall", "options": ["Provides rigidity and is not the primary selective barrier", "Controls all molecular transport", "Contains receptor proteins exclusively", "Is made primarily of phospholipids"], "answer": 0}, {"id": 79, "question": "Which structure permits direct cytoplasmic continuity between adjacent plant cells?", "options": ["Plasmodesmata", "Desmosomes", "Centrioles", "Lysosomes"], "answer": 0}, {"id": 80, "question": "Stem cells are characterized by their capacity for", "options": ["Self-renewal and differentiation", "Photosynthesis only", "Permanent specialization", "Lysosomal digestion"], "answer": 0}, {"id": 81, "question": "A pluripotent stem cell can generally differentiate into", "options": ["Many cell types derived from the three germ layers", "Only one specialized cell type", "Only blood cells", "Only reproductive cells"], "answer": 0}, {"id": 82, "question": "A major therapeutic significance of stem cells is their potential to", "options": ["Replace or repair damaged tissues", "Eliminate all mutations", "Stop cellular signalling", "Prevent every disease"], "answer": 0}, {"id": 83, "question": "Totipotent cells have the greatest developmental potential because they can", "options": ["Give rise to embryonic and extraembryonic tissues", "Form only neurons", "Form only blood cells", "Produce only muscle cells"], "answer": 0}, {"id": 84, "question": "Which process directly increases plasma-membrane surface area?", "options": ["Exocytosis", "Endocytosis", "Lysosomal digestion", "Ribosomal translation"], "answer": 0}, {"id": 85, "question": "Which process generally decreases plasma-membrane surface area?", "options": ["Exocytosis", "Endocytosis", "Protein synthesis", "Photosynthesis"], "answer": 1}, {"id": 86, "question": "If ATP production is severely reduced, which process is most likely to be impaired?", "options": ["Active vesicular transport", "Simple diffusion", "Osmosis", "Passive facilitated diffusion"], "answer": 0}, {"id": 87, "question": "Membrane proteins can function as", "options": ["Channels, carriers, receptors, and enzymes", "DNA molecules only", "Cellulose fibers only", "Ribosomal subunits only"], "answer": 0}, {"id": 88, "question": "Cholesterol in an animal-cell membrane helps", "options": ["Modulate membrane fluidity and stability", "Synthesize proteins", "Replicate DNA", "Digest carbohydrates"], "answer": 0}, {"id": 89, "question": "The hydrophobic region of a phospholipid bilayer is formed mainly by", "options": ["Fatty-acid tails", "Phosphate groups", "Carbohydrate chains", "Protein heads"], "answer": 0}, {"id": 90, "question": "Integral membrane proteins are characterized by", "options": ["Association with or penetration into the lipid bilayer", "Being completely outside the membrane", "Being found only in the nucleus", "Being made of cellulose"], "answer": 0}, {"id": 91, "question": "Which organelle would be especially abundant in a cell producing steroid hormones?", "options": ["Smooth ER", "Rough ER only", "Lysosomes", "Ribosomes only"], "answer": 0}, {"id": 92, "question": "A cell that secretes large amounts of digestive enzymes would be expected to contain abundant", "options": ["Rough ER, Golgi complex, and secretory vesicles", "Chloroplasts and glyoxisomes", "Centrioles and vacuoles only", "Smooth ER only"], "answer": 0}, {"id": 93, "question": "The primary function of ribosomes is", "options": ["Translation of mRNA into polypeptides", "Replication of DNA", "Lipid oxidation", "ATP storage"], "answer": 0}, {"id": 94, "question": "Which sequence correctly represents the flow of genetic information during protein synthesis?", "options": ["DNA → RNA → protein", "RNA → DNA → lipid", "Protein → DNA → RNA", "DNA → protein → RNA"], "answer": 0}, {"id": 95, "question": "The nuclear envelope is structurally related to the", "options": ["Endoplasmic reticulum", "Lysosome", "Chloroplast", "Centriole"], "answer": 0}, {"id": 96, "question": "Nuclear localization of genetic material provides an advantage because it", "options": ["Separates transcriptional processes from cytoplasmic translation", "Prevents RNA synthesis", "Eliminates ribosomes", "Stops gene regulation"], "answer": 0}, {"id": 97, "question": "Which combination is characteristic of eukaryotic cells but not typical prokaryotic cells?", "options": ["Nucleus, mitochondria, Golgi apparatus", "Ribosomes, DNA, plasma membrane", "Cytoplasm, DNA, ribosomes", "Plasma membrane, cytoplasm, genetic material"], "answer": 0}, {"id": 98, "question": "Which structure is common to both prokaryotic and eukaryotic cells?", "options": ["Plasma membrane", "Golgi complex", "Mitochondrion", "Membrane-bound nucleus"], "answer": 0}, {"id": 99, "question": "If lysosomal membranes become damaged extensively, the most immediate consequence could be", "options": ["Release of hydrolytic enzymes into the cytoplasm", "Increased photosynthesis", "Enhanced DNA replication", "Increased ribosome synthesis"], "answer": 0}, {"id": 100, "question": "A cell's ability to coordinate an extracellular stimulus with a specific intracellular response depends most directly on", "options": ["Signal transduction pathways", "Cell-wall thickness", "Number of chromosomes alone", "Vacuole size"], "answer": 0}, {"id": 101, "question": "Which cellular process would be most directly inhibited by the drug?", "options": ["Exocytosis", "Endocytosis", "Diffusion", "Osmosis"], "answer": 0}, {"id": 102, "question": "The proteins released by this cell were most likely initially synthesized on", "options": ["Ribosomes attached to rough ER", "Free ribosomes in cytosol only", "Mitochondrial ribosomes only", "Lysosomal membranes"], "answer": 0}, {"id": 103, "question": "Before reaching the plasma membrane, these proteins would most likely be modified and sorted in the", "options": ["Golgi complex", "Nucleolus", "Peroxisome", "Centriole"], "answer": 0}, {"id": 104, "question": "If Golgi function were disrupted instead, which event would be affected most directly?", "options": ["Modification and sorting of secretory proteins", "DNA replication", "Glycolysis", "Formation of spindle fibers"], "answer": 0}, {"id": 105, "question": "The signalling molecule most likely acts through", "options": ["A membrane receptor", "A mitochondrial DNA sequence", "A ribosomal binding site", "A lysosomal enzyme"], "answer": 0}, {"id": 106, "question": "cAMP in this pathway functions primarily as a", "options": ["Second messenger", "First messenger", "Structural lipid", "Transcription factor"], "answer": 0}, {"id": 107, "question": "Activation of protein kinases would most directly result in", "options": ["Phosphorylation of target proteins", "Removal of all membrane proteins", "DNA degradation", "Formation of cellulose"], "answer": 0}, {"id": 108, "question": "If the receptor were absent, the most likely consequence would be", "options": ["Failure to initiate the specific signalling pathway", "Increased ATP synthesis automatically", "Increased lysosomal digestion", "Immediate DNA replication"], "answer": 0}, {"id": 109, "question": "Which photosynthetic process would be most directly impaired?", "options": ["Light-dependent reactions", "Calvin cycle enzymes in the stroma", "Cytoplasmic glycolysis", "Protein digestion"], "answer": 0}, {"id": 110, "question": "The photosystems are normally located in the", "options": ["Thylakoid membranes", "Chloroplast stroma", "Outer chloroplast membrane", "Cell wall"], "answer": 0}, {"id": 111, "question": "A reduction in electron transport would most directly reduce production of", "options": ["ATP and NADPH", "DNA and RNA", "Lysosomal enzymes", "Cellulose and lignin"], "answer": 0}, {"id": 112, "question": "The Calvin cycle would be affected indirectly because it depends on", "options": ["ATP and NADPH generated by light-dependent reactions", "Lysosomal enzymes", "Ribosomes in the nucleus", "Mitochondrial DNA only"], "answer": 0}, {"id": 113, "question": "Cell X is most likely", "options": ["Prokaryotic", "Eukaryotic", "Multinucleate", "A mature plant cell"], "answer": 0}, {"id": 114, "question": "Which structure should be present in both cells?", "options": ["Ribosomes", "Golgi apparatus", "Nuclear envelope", "Mitochondria"], "answer": 0}, {"id": 115, "question": "Cell Y can compartmentalize metabolic reactions more extensively because it possesses", "options": ["Membrane-bound organelles", "Circular DNA only", "Smaller ribosomes", "A nucleoid"], "answer": 0}, {"id": 116, "question": "If the nuclear envelope of Cell Y disappeared permanently, which distinction between the two cells would become most directly affected?", "options": ["Separation of genetic material from cytoplasm", "Presence of ribosomes", "Presence of plasma membrane", "Presence of DNA"], "answer": 0}, {"id": 117, "question": "Which process would be most directly affected?", "options": ["ATP-dependent active transport", "Simple diffusion", "Osmosis", "Passive facilitated diffusion"], "answer": 0}, {"id": 118, "question": "Vesicle trafficking would likely be impaired because", "options": ["Many steps require cellular energy", "Vesicles cannot contain proteins", "Membranes become DNA", "Golgi complexes disappear immediately"], "answer": 0}, {"id": 119, "question": "Which process could continue without direct ATP expenditure?", "options": ["Simple diffusion down a concentration gradient", "Primary active transport", "Vesicle formation requiring energy", "Protein phosphorylation by ATP-dependent kinases"], "answer": 0}, {"id": 120, "question": "Severe ATP depletion would particularly compromise maintenance of", "options": ["Electrochemical gradients", "DNA base pairing", "Phospholipid structure itself", "Ribosomal RNA sequence"], "answer": 0}, {"id": 121, "question": "The specialized microbodies described are", "options": ["Glyoxisomes", "Lysosomes", "Ribosomes", "Centrioles"], "answer": 0}, {"id": 122, "question": "Their activity is especially important because the seed", "options": ["Contains stored lipids that can be converted toward carbohydrate metabolism", "Cannot perform respiration", "Lacks mitochondria", "Cannot synthesize enzymes"], "answer": 0}, {"id": 123, "question": "Glyoxisomes are developmentally/functionally related to", "options": ["Peroxisomes", "Golgi complexes", "Nuclei", "Chloroplast grana"], "answer": 0}, {"id": 124, "question": "The metabolic advantage is greatest during early growth because", "options": ["Stored reserves can support seedling development before extensive photosynthesis", "Photosynthesis is already maximal", "The seed has no DNA", "Ribosomes cannot function"], "answer": 0}, {"id": 125, "question": "The affected organelles are most likely", "options": ["Peroxisomes", "Lysosomes", "Ribosomes", "Golgi bodies"], "answer": 0}, {"id": 126, "question": "The accumulated substance is potentially harmful because hydrogen peroxide", "options": ["Can participate in damaging oxidative reactions", "Is a structural component of DNA", "Produces ribosomes", "Is required for chromosome separation"], "answer": 0}, {"id": 127, "question": "Catalase normally helps protect cells by", "options": ["Converting hydrogen peroxide into less harmful products", "Synthesizing ATP directly", "Producing glucose", "Digesting proteins"], "answer": 0}, {"id": 128, "question": "Which organelle would be less directly involved in this defect?", "options": ["Golgi apparatus", "Peroxisome", "Mitochondrion", "Cytosolic enzymes"], "answer": 0}, {"id": 129, "question": "The primary movement responsible for the change is", "options": ["Water entering the cell by osmosis", "Solute leaving by exocytosis", "Proteins entering by endocytosis", "ATP entering through channels"], "answer": 0}, {"id": 130, "question": "The structure that resists excessive expansion is primarily the", "options": ["Cell wall", "Ribosome", "Golgi apparatus", "Nucleolus"], "answer": 0}, {"id": 131, "question": "The large vacuole contributes to turgidity mainly by", "options": ["Accumulating water and solutes", "Synthesizing DNA", "Producing ribosomes", "Performing translation"], "answer": 0}, {"id": 132, "question": "The membrane surrounding the vacuole is the", "options": ["Tonoplast", "Nuclear envelope", "Crista", "Thylakoid"], "answer": 0}, {"id": 133, "question": "The accumulating material would normally be degraded primarily by", "options": ["Lysosomal hydrolytic enzymes", "Ribosomes", "Centrioles", "Chlorophyll"], "answer": 0}, {"id": 134, "question": "The recycling of damaged organelles through lysosomes is called", "options": ["Autophagy", "Exocytosis", "Translation", "Photolysis"], "answer": 0}, {"id": 135, "question": "Lysosomal enzymes function optimally in an environment that is generally", "options": ["Acidic", "Strongly alkaline", "Completely neutral only", "Anaerobic only"], "answer": 0}, {"id": 136, "question": "Which organelle has an important role in supplying many lysosomal enzymes through protein-processing pathways?", "options": ["Golgi complex", "Mitochondrion", "Chloroplast", "Centriole"], "answer": 0}, {"id": 137, "question": "The receptor protein would most likely be synthesized on", "options": ["Ribosomes associated with rough ER", "Free DNA molecules", "Lysosomal ribosomes", "Centrioles"], "answer": 0}, {"id": 138, "question": "The next major processing station is the", "options": ["Golgi complex", "Nucleolus", "Mitochondrial matrix", "Vacuole"], "answer": 0}, {"id": 139, "question": "Transport between these compartments is mediated largely by", "options": ["Vesicles", "Chromosomes", "Plasmodesmata", "Cristae"], "answer": 0}, {"id": 140, "question": "Insertion of the receptor into the plasma membrane most directly involves", "options": ["Membrane fusion during exocytosis", "Lysosomal digestion", "DNA replication", "Phagocytosis"], "answer": 0}, {"id": 141, "question": "The different responses can best be explained by differences in", "options": ["Intracellular signalling machinery", "Genetic code itself", "Plasma membrane phospholipids only", "Number of chromosomes only"], "answer": 0}, {"id": 142, "question": "The initial common event is most likely", "options": ["Ligand-receptor binding", "DNA replication", "Protein degradation", "ATP hydrolysis in lysosomes"], "answer": 0}, {"id": 143, "question": "If Cell A possesses a kinase absent in Cell B, the difference would most likely occur during", "options": ["Signal transduction", "Ligand synthesis outside the cell", "Cell-wall formation", "Ribosome assembly"], "answer": 0}, {"id": 144, "question": "The observation demonstrates that cellular signalling is", "options": ["Context-dependent", "Identical in every cell", "Independent of receptors", "Restricted to prokaryotes"], "answer": 0}, {"id": 145, "question": "The paired cylindrical structures are", "options": ["Centrioles", "Lysosomes", "Peroxisomes", "Ribosomes"], "answer": 0}, {"id": 146, "question": "Their associated region contributes to organization of", "options": ["Microtubules", "Cellulose", "Thylakoids", "DNA bases"], "answer": 0}, {"id": 147, "question": "The microtubule network is especially important for", "options": ["Chromosome movement during cell division", "Protein digestion", "Photosynthesis", "Lipid storage"], "answer": 0}, {"id": 148, "question": "A defect in this organization could most directly disrupt", "options": ["Accurate chromosome segregation", "Lysosomal pH", "Chlorophyll synthesis", "Cell-wall composition"], "answer": 0}, {"id": 149, "question": "The ability of these cells to produce different specialized cell types demonstrates", "options": ["Differentiation potential", "Permanent specialization", "Loss of genetic material", "Absence of signalling"], "answer": 0}, {"id": 150, "question": "The chemical signals are important because they can influence", "options": ["Which genes and cellular pathways become active", "The existence of DNA", "Whether ribosomes exist", "Whether the plasma membrane exists"], "answer": 0}];
+
+let currentQuestions = [];
+let submitted = false;
+let timeLeft = 8 * 60;
+let timerInterval = null;
+let studentName = "";
+
+function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+function createQuiz() {
+    submitted = false;
+    document.getElementById("nameArea").style.display = "none";
+    document.getElementById("certificate").style.display = "none";
+    timeLeft = 8 * 60;
+    clearInterval(timerInterval);
+
+    currentQuestions = shuffle(questionBank).slice(0, 15).map(q => {
+        const optionObjects = q.options.map((text, index) => ({
+            text: text,
+            correct: index === q.answer
+        }));
+        return {
+            ...q,
+            shuffledOptions: shuffle(optionObjects)
+        };
+    });
+
+    const form = document.getElementById("quizForm");
+    form.innerHTML = "";
+
+    currentQuestions.forEach((q, index) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+
+        const optionsHTML = q.shuffledOptions.map((option, optionIndex) => `
+            <label class="option-label">
+                <input type="radio" name="q${index}" value="${optionIndex}">
+                ${option.text}
+            </label>
+        `).join("");
+
+        card.innerHTML = `
+            <div class="question-number">Question ${index + 1} of 15</div>
+            <div class="question-text">${q.question}</div>
+            <div class="options">${optionsHTML}</div>
+        `;
+
+        form.appendChild(card);
+    });
+
+    document.getElementById("result").style.display = "none";
+    document.getElementById("quizArea").style.display = "block";
+    document.getElementById("submitBtn").disabled = false;
+    updateTimer();
+    startTimer();
+    window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimer();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            submitQuiz(true);
+        }
+    }, 1000);
+}
+
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+    const seconds = (timeLeft % 60).toString().padStart(2, "0");
+    document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+}
+
+function submitQuiz(autoSubmitted = false) {
+    if (submitted) return;
+
+    submitted = true;
+    clearInterval(timerInterval);
+
+    let score = 0;
+    let answered = 0;
+    let reviewHTML = "";
+
+    currentQuestions.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        const selectedIndex = selected ? Number(selected.value) : null;
+
+        if (selected) answered++;
+
+        const correctIndex = q.shuffledOptions.findIndex(option => option.correct);
+        const correctText = q.shuffledOptions[correctIndex].text;
+        const selectedText = selected ? q.shuffledOptions[selectedIndex].text : "Not answered";
+
+        if (selectedIndex === correctIndex) {
+            score++;
+            reviewHTML += `
+                <div class="review-item correct">
+                    <strong>Q${index + 1} — Correct ✓</strong>
+                    <p>${q.question}</p>
+                    <p><strong>Your answer:</strong> ${selectedText}</p>
+                </div>
+            `;
+        } else if (selected) {
+            reviewHTML += `
+                <div class="review-item wrong">
+                    <strong>Q${index + 1} — Incorrect ✗</strong>
+                    <p>${q.question}</p>
+                    <p><strong>Your answer:</strong> ${selectedText}</p>
+                    <p><strong>Correct answer:</strong> ${correctText}</p>
+                </div>
+            `;
+        } else {
+            reviewHTML += `
+                <div class="review-item unanswered">
+                    <strong>Q${index + 1} — Not answered</strong>
+                    <p>${q.question}</p>
+                    <p><strong>Correct answer:</strong> ${correctText}</p>
+                </div>
+            `;
+        }
+    });
+
+    const percentage = Math.round((score / 15) * 100);
+
+    document.getElementById("score").textContent = `${score} / 15 (${percentage}%)`;
+
+    let message = "";
+    if (percentage >= 80) {
+        message = "Excellent performance! Keep practicing.";
+    } else if (percentage >= 60) {
+        message = "Good work! Review the incorrect answers and try again.";
+    } else {
+        message = "Keep studying and try the quiz again.";
+    }
+
+    if (autoSubmitted) {
+        message += " The quiz was automatically submitted because the 8-minute timer ended.";
+    }
+
+    message += ` You answered ${answered} out of 15 questions.`;
+
+    document.getElementById("resultMessage").textContent = message;
+    document.getElementById("review").innerHTML = reviewHTML;
+    document.getElementById("quizArea").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("certificateName").textContent = studentName;
+    document.getElementById("certificateScore").textContent = `Quiz Score: ${score} / 15 (${percentage}%)`;
+    document.getElementById("certificateDate").textContent = new Date().toLocaleDateString(undefined, {
+        year: "numeric", month: "long", day: "numeric"
+    });
+    document.getElementById("certificateId").textContent = "KP-BIO1-" + Date.now().toString().slice(-8);
+    document.getElementById("certificate").style.display = "block";
+
+    window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+    submitQuiz(false);
+});
+
+document.getElementById("retryBtn").addEventListener("click", () => {
+    createQuiz();
+});
+
+document.getElementById("startQuizBtn").addEventListener("click", () => {
+    const input = document.getElementById("studentName");
+    const name = input.value.trim();
+
+    if (!name) {
+        alert("Please enter your name before starting the quiz.");
+        input.focus();
+        return;
+    }
+
+    studentName = name;
+    createQuiz();
+});
+
+document.getElementById("printCertificateBtn").addEventListener("click", () => {
+    window.print();
+});
+</script>
+
+</body>
+</html>
